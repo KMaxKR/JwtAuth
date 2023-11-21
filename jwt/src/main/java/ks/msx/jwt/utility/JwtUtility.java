@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import ks.msx.jwt.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseCookie;
@@ -14,7 +15,7 @@ import org.springframework.web.util.WebUtils;
 import java.util.Date;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtUtility {
     private final static Logger logger = LoggerFactory.getLogger(JwtUtility.class);
 
