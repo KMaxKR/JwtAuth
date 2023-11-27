@@ -3,6 +3,7 @@ package ks.msx.jwt.utility;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import ks.msx.jwt.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public class JwtUtility {
             token = Jwts.builder()
                     .setSubject(username)
                     .claim("name", username)
+                    .claim("role", Role.ADMIN)
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                     .signWith(SignatureAlgorithm.HS256, key)
@@ -37,7 +39,6 @@ public class JwtUtility {
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
-
         return claims.getSubject();
     }
 }
