@@ -34,7 +34,7 @@ public class JwtUtility {
         }catch (Exception e){
             logger.error(String.valueOf(e));
         }
-        return token;
+        return "Bearer "+token;
     }
 
     public Claims getClaim(String token){
