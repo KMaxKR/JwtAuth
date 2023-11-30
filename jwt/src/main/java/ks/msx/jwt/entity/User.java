@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Entity
-@Table(name = "")
+@Table(name = "user_table")
 @Data
 @Builder
 @AllArgsConstructor
