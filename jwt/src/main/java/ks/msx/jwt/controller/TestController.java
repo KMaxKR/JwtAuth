@@ -1,8 +1,12 @@
 package ks.msx.jwt.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import ks.msx.jwt.utility.JwtUtility;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.Session;
+import org.apache.catalina.session.StandardSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,9 +23,12 @@ public class TestController {
     private final JwtUtility jwtUtility;
 
     @GetMapping("/test/endpoint/generate")
-    public ResponseEntity<?> generateTokenEndpoint(HttpServletResponse response) throws NoSuchAlgorithmException, IOException {
+    public ResponseEntity<?> generateTokenEndpoint(HttpServletRequest request) throws NoSuchAlgorithmException, IOException {
         String token = jwtUtility.generateToken("k");
         authenticate("k", "k");
+//        Send token via HttpSession
+//        HttpSession session = request.getSession();
+//        session.setAttribute("AUTHORIZATION", token);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 

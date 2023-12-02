@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import ks.msx.jwt.service.UserService;
 import ks.msx.jwt.utility.JwtUtility;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 
 @Component
 @AllArgsConstructor
@@ -25,7 +27,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        final String requestToken = request.getHeader("Authorization");
+        String requestToken = request.getHeader("Authorization");
+//        Receive Token From HttpSession
+//        String requestToken = null;
+//        try{
+//            requestToken = request.getSession().getAttribute("AUTHORIZATION").toString();
+//        }catch (Exception e){
+//            e.getStackTrace();
+//        }
+
         String username = null;
         String token = null;
 
