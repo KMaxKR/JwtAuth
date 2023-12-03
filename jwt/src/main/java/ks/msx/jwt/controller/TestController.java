@@ -1,5 +1,6 @@
 package ks.msx.jwt.controller;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
@@ -23,12 +26,16 @@ public class TestController {
     private final JwtUtility jwtUtility;
 
     @GetMapping("/test/endpoint/generate")
-    public ResponseEntity<?> generateTokenEndpoint(HttpServletRequest request) throws NoSuchAlgorithmException, IOException {
+    public ResponseEntity<?> generateTokenEndpoint(HttpServletResponse response) throws NoSuchAlgorithmException, IOException {
         String token = jwtUtility.generateToken("k");
         authenticate("k", "k");
 //        Send token via HttpSession
 //        HttpSession session = request.getSession();
 //        session.setAttribute("AUTHORIZATION", token);
+
+        // Send Token Via Cookie
+        Cookie cookie =  new Cookie("Authorization", URLEncoder.encode(token, StandardCharsets.UTF_8));
+        response.addCookie(cookie);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 

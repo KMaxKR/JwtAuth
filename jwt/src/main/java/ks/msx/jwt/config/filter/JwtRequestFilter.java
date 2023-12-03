@@ -2,11 +2,13 @@ package ks.msx.jwt.config.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ks.msx.jwt.service.UserService;
 import ks.msx.jwt.utility.JwtUtility;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.net.CookieStore;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 
 @Component
@@ -27,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String requestToken = request.getHeader("Authorization");
+        //String requestToken = request.getHeader("Authorization");
 //        Receive Token From HttpSession
 //        String requestToken = null;
 //        try{
@@ -35,6 +43,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 //        }catch (Exception e){
 //            e.getStackTrace();
 //        }
+
+        // Get Token Via Cookie
+        String requestToken = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (Objects.equals(cookie.getName(), "Authorization")) {
+                        requestToken = URLDecoder.decode(cookie.getValue(), StandardCharsets.UTF_8);
+                }
+            }
+        }
 
         String username = null;
         String token = null;
