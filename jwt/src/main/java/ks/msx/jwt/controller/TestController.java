@@ -26,15 +26,17 @@ public class TestController {
     private final JwtUtility jwtUtility;
 
     @GetMapping("/test/endpoint/generate")
-    public ResponseEntity<?> generateTokenEndpoint(HttpServletResponse response) throws NoSuchAlgorithmException, IOException {
+    public ResponseEntity<?> generateTokenEndpoint(HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException, IOException {
         String token = jwtUtility.generateToken("k");
         authenticate("k", "k");
-//        Send token via HttpSession
+//        //Send token via HttpSession
 //        HttpSession session = request.getSession();
+//        session.setMaxInactiveInterval(100);
 //        session.setAttribute("AUTHORIZATION", token);
 
         // Send Token Via Cookie
         Cookie cookie =  new Cookie("Authorization", URLEncoder.encode(token, StandardCharsets.UTF_8));
+        cookie.setMaxAge(10000000);
         response.addCookie(cookie);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }

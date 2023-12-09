@@ -17,7 +17,7 @@ import java.util.Date;
 public class JwtUtility {
     private final static Logger logger = LoggerFactory.getLogger(JwtUtility.class);
     private final static String key = "javaLangTestJwt20RE21Specs=JRUWTaskKREFGH19";
-    private final static long jwtExpirationMs = 20000000000000L;
+    private final static long jwtExpirationMs = 60*60*20L;
 
 
     public String generateToken(String username) throws NoSuchAlgorithmException {
